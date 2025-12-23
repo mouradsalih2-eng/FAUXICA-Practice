@@ -237,3 +237,109 @@ transform: translateX(10px);
 .card:hover .card-details {
     transform: translateY(-20px);
 }
+
+/* =========================================
+   MEDIA QUERIES (For Tablets & Mobile)
+   ========================================= */
+
+@media (max-width: 900px) {
+    
+    /* 1. RESET WRAPPER PADDING */
+    /* Add side padding so text doesn't hit the screen edge */
+    .wrapper {
+        padding: 0 20px; 
+    }
+
+    /* 2. HEADER: Stack Logo and Nav */
+    header {
+        flex-direction: column;
+        gap: 1em;
+        text-align: center;
+    }
+
+    nav {
+        margin: 1em 0; /* Reduce the huge 4em margin */
+    }
+
+    nav ul {
+        gap: 1.5em; /* Bring links closer together */
+        justify-content: center;
+        flex-wrap: wrap; /* Allow links to drop to next line if needed */
+    }
+
+    /* 3. MAIN HERO: Stack Left and Right Columns */
+    main {
+        flex-direction: column;
+        margin-top: 4em; /* Reduce from 11em */
+        gap: 4em;        /* Reduce from 12em */
+    }
+
+    .left-col, 
+    .right-col {
+        width: 100%; /* Force full width */
+    }
+
+    /* 4. TYPOGRAPHY SCALING */
+    h1 {
+        font-size: 3.5rem; /* Shrink the big title */
+        text-align: center;
+    }
+
+    .subhead {
+        text-align: center;
+    }
+
+    /* 5. CTA BUTTONS: Center them */
+    .cta-btns {
+        justify-content: center;
+        flex-direction: column; /* Stack buttons on very small screens */
+        align-items: center;
+        margin: 3em 0;
+    }
+
+    /* 6. NEWS SECTION */
+    .news {
+        padding: 2em; /* Reduce from 5em */
+        flex-direction: column; /* Stack number on top of text */
+        gap: 1em;
+        text-align: center;
+    }
+    
+    .news::before {
+        display: none; /* Hide the confetti on mobile to save space */
+    }
+
+    /* 7. GALLERY GRID (The Complex Part) */
+    /* Switch from Grid to Flex Column to stack cards */
+    .right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .card1 {
+        height: 300px; /* Give it a fixed height since it lost its grid height */
+    }
+    
+    /* Reset the grid area so it doesn't float weirdly */
+    .card1, .card2, .card3 {
+        grid-area: auto; 
+    }
+}
+
+/* =========================================
+   EXTRA SMALL SCREENS (Phones < 450px)
+   ========================================= */
+@media (max-width: 450px) {
+    nav ul {
+        gap: 1em;
+    }
+    
+    nav ul li a {
+        font-size: 1.4rem;
+    }
+    
+    h1 {
+        font-size: 2.8rem;
+    }
+}
