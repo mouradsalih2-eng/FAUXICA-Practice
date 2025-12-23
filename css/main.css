@@ -1,26 +1,44 @@
+/* --- RESET & GLOBAL --- */
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; /* 1rem = 10px */
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
-    font-family: 'poppins';
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Prevents side scrolling on mobile */
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 .wrapper {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 2em; /* Prevents content hitting the edges on small screens */
 }
 
-/* Nav Bar */
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* --- HEADER --- */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 2em 0;
+    position: relative;
+    z-index: 10;
 }
 
-nav {
-    margin: 4em;
+/* Hide burger/checkbox by default on Desktop */
+.menu-btn, .menu-icon, .close-btn {
+    display: none;
 }
 
 nav ul {
@@ -28,318 +46,311 @@ nav ul {
     display: flex;
     gap: 3.6em;
     margin: 0;
-
+    padding: 0;
 }
 
 nav ul li a {
-    text-decoration: none;
-    color: black;
     text-transform: uppercase;
     font-size: 1.6rem;
     position: relative;
+    font-weight: 400;
 }
 
-nav ul li a.active:before {
-    position: absolute;
-    content: "";
-    width: 35%;
-    height: 1px;
-    border-bottom: 2px solid black;
-    bottom: -6px;
-
-}
+/* Nav Link Hover Effect */
 nav ul li a:before {
     position: absolute;
     content: "";
     width: 0%;
-    height: 1px;
-    border-bottom: 2px solid gray;
+    height: 2px;
+    background: gray;
     bottom: -6px;
-    transition: all ease-in-out 0.3s;
-
-
+    transition: width 0.3s ease-in-out;
 }
 
-/* Hero Section */
+nav ul li a:hover:before,
+nav ul li a.active:before {
+    width: 100%;
+    background: black;
+}
+
+/* --- MAIN LAYOUT --- */
 main {
     display: flex;
-    gap: 12em;
-    margin-top: 11em;
+    gap: 5%; /* Use percent instead of fixed em */
+    margin-top: 5em;
+    padding-bottom: 5em;
 }
 
 .left-col {
     width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .right-col {
-    flex-grow: 1;
+    width: 50%;
 }
 
+/* Typography */
 h1 {
     font-size: 5.2rem;
-    font-family: 'playfair-display';
+    font-family: 'Playfair Display', serif;
     font-weight: normal;
-    margin: 0;
+    margin: 0 0 0.2em 0;
+    line-height: 1.1;
 }
 
 .subhead {
     font-size: 1.8rem;
-    font-family: 'poppins';
-    font-weight: light;
+    color: #555;
+    margin-bottom: 2em;
 }
 
+/* CTA Buttons */
 .cta-btns {
-    margin: 5em 0;
-}
-.cta-btns, .secondary-cta {
     display: flex;
-    gap: 3em;
+    gap: 2em;
+    align-items: center;
+    margin-bottom: 4em;
+    flex-wrap: wrap; /* Allows buttons to stack if screen is tight */
 }
 
-.primary-cta{
+.primary-cta {
     background-color: #F2F0DF;
-    font-size: 1.8rem;
-    text-decoration: none;
-    color: black;
+    font-size: 1.6rem;
     font-weight: bold;
-    font-family: 'poppins';
     border-radius: 2em;
     padding: 1em 2em;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+}
+
+.primary-cta:hover {
+    background: #e6e0b5;
+}
+
+.secondary-cta {
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
     gap: 1em;
-    vector-effect: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
-.secondary-cta{
-text-decoration: none;
-font-size: 1.8rem;
-color: black;
-display: block;
-padding: 1em 0;
-align-items: center;
+
+.secondary-cta:hover span {
+    text-decoration: underline;
 }
-.secondary-cta svg {
-    width: 20px;
-    transition: transform ease-in-out 0.3s;
+
+.secondary-cta:hover svg {
+    transform: translateX(5px);
 }
+
+/* News Section */
 .news {
     display: flex;
-    gap: 5.2em;
-    padding: 5em;
+    gap: 3em;
+    padding: 3em;
     border: 1px solid black;
-    border-radius: 1.9em;
+    border-radius: 2em;
     position: relative;
+    background: white;
 }
-.news::before {
-    position: absolute;
-    content: "";
-    background: url('../images/confetti.svg');
-    width: 100px;
-    height: 100px;
-    top: -20px;
-    left: -20px;
-    z-index: 2;
-}
-p.employees {
+
+.employees {
     font-size: 3.3rem;
     font-weight: lighter;
     margin: 0;
-    line-height: 100%;
 }
-p.details{
+
+.details {
     font-size: 1.4rem;
-    font-weight: light;
     margin: 0;
+    line-height: 1.6;
 }
-/* Right Column Gallary */
-.right-col{
-    display:grid;
-    gap: 2.3em;
-    grid-template-columns: repeat(2,auto);
+
+/* --- GRID / CARDS (Desktop) --- */
+.right-col {
+    display: grid;
+    gap: 2em;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 300px 300px;
+    /* This creates the L-shape: Card 1 takes whole left col, 2 & 3 take right col */
     grid-template-areas: 
-    "left right"
-    "left bottom";
+        "left right-top"
+        "left right-bot";
 }
+
 .card {
-    border-radius: 1.9em;
-    padding: 1.1em;
+    border-radius: 2em;
+    padding: 1.5em;
     display: flex;
-    align-items: end;
-    background-size: 150%;
-    transition: background-size ease-in-out 0.8s; 
-
-}
-.card1 {
-    grid-area: left;
-    background-image: url(../images/clothing1.jpg); 
+    align-items: flex-end;
+    background-size: cover;
+    background-position: center;
     position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
 }
-.card1:before{
-    position: absolute;
-    content:"";
-    width: 100%;
-    height: 100%;
-    background: url(../images/tag.svg) no-repeat;
-    top: 20px;
-    left: -30px;
-    pointer-events: none;
 
+.card:hover .card-details {
+    transform: translateY(-5px);
+}
 
+.card1 { 
+    grid-area: left; 
+    background-image: url('../images/clothing1.jpg');
+    /* Fallback color if image missing */
+    background-color: #eee;
 }
-.card2 {
-    background-image: url(../images/clothing2.jpg);
-    
+
+.card2 { 
+    grid-area: right-top; 
+    background-image: url('../images/clothing2.jpg'); 
+    background-color: #ddd;
 }
-.card3 {
-    background-image: url(../images/clothing3.jpg);
-  
+
+.card3 { 
+    grid-area: right-bot; 
+    background-image: url('../images/clothing3.jpg'); 
+    background-color: #ccc;
 }
+
 .card-details {
     background: white;
-    padding: 2em;
-    border-radius: .6em;
+    padding: 1.5em;
+    border-radius: 1em;
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    transition: transform ease-in-out 0.8s;
+    align-items: center;
 }
-   .product-title {
-        font-size: 1.6rem;
-        font-weight: bold;
-        margin: 0;
-        text-decoration: none;
-        color: black;       
-        }
-   .card-details p {
-       font-size: 1.4rem;
-       font-weight: normal;
-       margin: 0;
-       color: gray;
-   }
-   p.product-price {
-       font-size: 1.7rem;
-   }
-   /* Micor Interactions */
-   nav ul li a:hover:before {
-    width: 35%;
-   }
-.primary-cta:hover {
-    background: #EEE8B2;
+
+.product-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: block;
 }
-.secondary-cta:hover svg{
-transform: translateX(10px);
+
+.card-details p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: gray;
 }
-.secondary-cta:hover {
-    text-decoration: underline;
-}
-.card:hover {
-    background-size:160%; 
-}
-.card:hover .card-details {
-    transform: translateY(-20px);
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: black !important;
 }
 
 /* =========================================
-   MEDIA QUERIES (For Tablets & Mobile)
+   MOBILE & TABLET RESPONSIVENESS
    ========================================= */
 
 @media (max-width: 900px) {
-    
-    /* 1. RESET WRAPPER PADDING */
-    /* Add side padding so text doesn't hit the screen edge */
-    .wrapper {
-        padding: 0 20px; 
-    }
-
-    /* 2. HEADER: Stack Logo and Nav */
-    header {
-        flex-direction: column;
-        gap: 1em;
-        text-align: center;
-    }
-
-    nav {
-        margin: 1em 0; /* Reduce the huge 4em margin */
-    }
-
-    nav ul {
-        gap: 1.5em; /* Bring links closer together */
-        justify-content: center;
-        flex-wrap: wrap; /* Allow links to drop to next line if needed */
-    }
-
-    /* 3. MAIN HERO: Stack Left and Right Columns */
+    /* 1. Layout Stacking */
     main {
         flex-direction: column;
-        margin-top: 4em; /* Reduce from 11em */
-        gap: 4em;        /* Reduce from 12em */
+        margin-top: 2em;
     }
 
-    .left-col, 
+    .left-col, .right-col {
+        width: 100%;
+    }
+
     .right-col {
-        width: 100%; /* Force full width */
+        margin-top: 4em;
     }
 
-    /* 4. TYPOGRAPHY SCALING */
-    h1 {
-        font-size: 3.5rem; /* Shrink the big title */
-        text-align: center;
+    /* 2. Burger Menu Setup */
+    .menu-icon {
+        display: block; /* Show the burger icon */
+        cursor: pointer;
+        font-size: 2.5rem;
+        user-select: none;
     }
 
-    .subhead {
-        text-align: center;
+    /* Create the 3 lines of the burger */
+    .nav-icon {
+        background: black;
+        display: block;
+        height: 2px;
+        position: relative;
+        width: 25px;
+    }
+    .nav-icon:before, .nav-icon:after {
+        background: black;
+        content: "";
+        display: block;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        transition: all 0.2s ease-out;
+    }
+    .nav-icon:before { top: 7px; }
+    .nav-icon:after { top: -7px; }
+
+    /* The actual Menu Drawer */
+    nav.menu {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hide off-screen to the right */
+        height: 100vh;
+        width: 70%; /* Takes up 70% of screen */
+        background: white;
+        z-index: 100;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.4s ease;
+        padding: 6em 2em;
     }
 
-    /* 5. CTA BUTTONS: Center them */
-    .cta-btns {
-        justify-content: center;
-        flex-direction: column; /* Stack buttons on very small screens */
-        align-items: center;
-        margin: 3em 0;
+    /* The Close Button inside nav */
+    .close-btn {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 4rem;
+        cursor: pointer;
+        line-height: 1;
     }
 
-    /* 6. NEWS SECTION */
-    .news {
-        padding: 2em; /* Reduce from 5em */
-        flex-direction: column; /* Stack number on top of text */
-        gap: 1em;
-        text-align: center;
-    }
-    
-    .news::before {
-        display: none; /* Hide the confetti on mobile to save space */
-    }
-
-    /* 7. GALLERY GRID (The Complex Part) */
-    /* Switch from Grid to Flex Column to stack cards */
-    .right-col {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .card1 {
-        height: 300px; /* Give it a fixed height since it lost its grid height */
-    }
-    
-    /* Reset the grid area so it doesn't float weirdly */
-    .card1, .card2, .card3 {
-        grid-area: auto; 
-    }
-}
-
-/* =========================================
-   EXTRA SMALL SCREENS (Phones < 450px)
-   ========================================= */
-@media (max-width: 450px) {
     nav ul {
-        gap: 1em;
+        flex-direction: column;
+        gap: 2em;
     }
     
     nav ul li a {
-        font-size: 1.4rem;
+        font-size: 2rem;
+    }
+
+    /* 3. THE CHECKBOX HACK LOGIC */
+    /* When checkbox is checked, slide the menu in */
+    #menu-btn:checked ~ nav.menu {
+        right: 0;
+    }
+
+    /* 4. Layout Fixes for Mobile */
+    h1 { font-size: 3.6rem; }
+    
+    .news { 
+        flex-direction: column; 
+        text-align: center;
+        gap: 1em;
+    }
+
+    .cta-btns {
+        justify-content: flex-start;
+    }
+
+    /* Reset Grid for Mobile (Stack cards vertically) */
+    .right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
     }
     
-    h1 {
-        font-size: 2.8rem;
+    .card {
+        height: 300px; /* Force height since grid is gone */
     }
 }
